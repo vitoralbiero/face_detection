@@ -1,5 +1,4 @@
-# face_detection
-Face Detection and Alignment
+# Face Detection and Alignment
 
 Detect and align faces with Dlib 68 point detector (FaceCrop)
 Detect faces with Dlib CNN (FaceCropCNN)
