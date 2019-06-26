@@ -139,7 +139,8 @@ def crop_faces(model1, model2, cnn_face_detector, img_list_path, source, destina
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Detect and crop faces with MTCNN')
-    parser.add_argument('--dlib_model', '-m', help='Dlib face detector model.')
+    parser.add_argument('--dlib_model', '-m', help='Dlib face detector model.',
+                        default='./dlib_models/mmod_human_face_detector.dat')
     parser.add_argument('--img_list', '-i', help='File with an image list.')
     parser.add_argument('--source', '-s', help='Path for the images.')
     parser.add_argument('--dest', '-d', help='Folder to save the cropped faces.')
