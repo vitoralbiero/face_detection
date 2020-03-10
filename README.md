@@ -7,3 +7,5 @@ Detect faces with Dlib CNN (FaceCropCNN)
 Align faces manually clicking on both eyes (FaceCropManual)
 
 Detect and align faces with MTCNN + DlibCNN (FaceMTCNN)
+
+Detect and align faces with RetinaFace (RetinaFace)
