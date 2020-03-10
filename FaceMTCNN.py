@@ -96,8 +96,8 @@ def crop_faces(model1, model2, cnn_face_detector, img_list_path, source, destina
                 right = int(d.rect.right() * 1)
                 bottom = int(d.rect.bottom() * 1)
 
-                padding_px_x = int((right - left) * 0.3)
-                padding_px_y = int((bottom - top) * 0.3)
+                padding_px_x = int((right - left) * 0.5)
+                padding_px_y = int((bottom - top) * 0.5)
 
                 image = Image.fromarray(img)
 
@@ -110,13 +110,33 @@ def crop_faces(model1, model2, cnn_face_detector, img_list_path, source, destina
 
                 # detect using bbox
                 face_aligned = model2.get_input(face_arr)
-                face_aligned = np.transpose(face_aligned, (1, 2, 0))
-                face_aligned = cv2.cvtColor(face_aligned, cv2.COLOR_RGB2BGR)
 
-                if not path.exists(path.split(output_path)[0]):
-                    makedirs(path.split(output_path)[0])
+                if face_aligned is not None:
+                    face_aligned = np.transpose(face_aligned, (1, 2, 0))
+                    face_aligned = cv2.cvtColor(face_aligned, cv2.COLOR_RGB2BGR)
 
-                cv2.imwrite(output_path, face_aligned)
+                    if not path.exists(path.split(output_path)[0]):
+                        makedirs(path.split(output_path)[0])
+
+                    cv2.imwrite(output_path, face_aligned)
+
+                else:
+                    error_path = path.join(destination[:-1] + '_error', image_name)
+
+                    if not path.exists(path.split(error_path)[0]):
+                        makedirs(path.split(error_path)[0])
+
+                    cv2.imwrite(error_path, img_orig)
+
+                    error_path = path.join(destination[:-1] + '_error_size', image_name)
+
+                    if not path.exists(path.split(error_path)[0]):
+                        makedirs(path.split(error_path)[0])
+
+                    img = cv2.resize(img_orig, (image_size, image_size))
+
+                    cv2.imwrite(error_path, img)
+                    print ("Cannot find a face in the image {}!".format(image_name))
 
             else:
                 error_path = path.join(destination[:-1] + '_error', image_name)
