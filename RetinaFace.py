@@ -3,6 +3,7 @@ import argparse
 from os import path, makedirs
 import cv2
 import sys
+from tqdm import tqdm
 sys.path.insert(0, '../../insightface/common/')
 sys.path.insert(0, '../../insightface/RetinaFace/')
 from retinaface import RetinaFace
@@ -90,7 +91,7 @@ def crop_faces(detector, img_list_path, source, destination, target_size,
                max_size, image_size, align_mode, offset):
     img_list = np.loadtxt(img_list_path, dtype=np.str)
 
-    for image_name in img_list:
+    for image_name in tqdm(img_list):
         image_path = path.join(source, image_name)
         output_path = path.join(destination, image_name)
 

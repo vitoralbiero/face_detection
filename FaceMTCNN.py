@@ -6,6 +6,7 @@ import cv2
 from PIL import Image
 from scipy.spatial import distance
 import sys
+from tqdm import tqdm
 sys.path.insert(0, '../../insightface/deploy/')
 import face_model
 
@@ -13,11 +14,26 @@ import face_model
 def crop_faces(model1, model2, cnn_face_detector, img_list_path, source, destination, image_size):
     img_list = np.loadtxt(img_list_path, dtype=np.str)
 
-    for image_name in img_list:
+    # if img_list.shape[1] > 1:
+    #     img_list = img_list[:, 0]
+
+    for image_name in tqdm(img_list):
         image_path = path.join(source, image_name)
         output_path = path.join(destination, image_name)
 
         if path.isfile(output_path):
+            continue
+
+        if path.isfile(path.join(destination[:-1] + '_error', image_name)):
+            continue
+
+        if not image_path.lower().endswith('.png') and not image_path.lower().endswith('.jpg') \
+           and not image_path.lower().endswith('.bmp') and not image_path.lower().endswith('.jpeg'):
+            print(image_path)
+            continue
+
+        if not path.isfile(image_path):
+            print('Image does not exists')
             continue
 
         img_orig = cv2.imread(image_path)
